@@ -1,5 +1,11 @@
 Sure! Here's an example application that demonstrates the use of HBase and HiveQL for a flight information system:
 
+go to hbase shell
+
+```hbase
+```
+
+
 a. Create Flight Info HBase Table:
 ```
 create 'flight_info', 'flight', 'schedule', 'delay'
@@ -46,6 +52,11 @@ drop 'my_table'
 # Alter table
 alter 'my_table', NAME => 'column_family:new_column', VERSIONS => 1
 ```
+
+go to hive shell
+```hive
+```
+
 
 c. Creating an External Hive Table to Connect to HBase for Flight Information Table:
 ```sql
