@@ -2,7 +2,8 @@ Sure! Here's an example application that demonstrates the use of HBase and HiveQ
 
 go to hbase shell
 
-```hbase
+```
+hbase
 ```
 
 
@@ -54,7 +55,8 @@ alter 'my_table', NAME => 'column_family:new_column', VERSIONS => 1
 ```
 
 go to hive shell
-```hive
+```
+hive
 ```
 
 
