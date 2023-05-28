@@ -95,7 +95,7 @@ TBLPROPERTIES ("hbase.table.name" = "online_retail");
 
 p. Display records of OnlineRetail table in HBase:
 ```sql
-SELECT * FROM online_retail_hbase;
+scan 'online_retail_hbase'
 ```
 
 Make sure to execute these commands in the Hive shell to perform the respective operations on the OnlineRetail dataset.
