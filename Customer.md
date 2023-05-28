@@ -90,7 +90,7 @@ TBLPROPERTIES ("hbase.table.name" = "Customer_info");
 
 h. Display records of Customer Information Table in HBase:
 ```sql
-SELECT * FROM customer_info_hbase;
+scan customer_info_hbase;
 ```
 
 Make sure to execute these commands in the Hive shell to perform the respective operations on the customer information system.
