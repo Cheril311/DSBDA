@@ -13,9 +13,7 @@ CREATE TABLE online_retail (
   CustomerID STRING,
   Country STRING
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-STORED AS TEXTFILE;
+
 
 -- Load data into Online Retail table
 LOAD DATA INPATH '/path/to/online_retail_data.csv' INTO TABLE online_retail;
