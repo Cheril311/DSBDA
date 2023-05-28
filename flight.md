@@ -3,7 +3,7 @@ Sure! Here's an example application that demonstrates the use of HBase and HiveQ
 go to hbase shell
 
 ```
-hbase
+hbase shell
 ```
 
 
