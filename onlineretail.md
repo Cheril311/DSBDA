@@ -1,7 +1,10 @@
-Based on the columns you provided, here's an example of how you can create a Hive table for your data:
+Here's an example application using HBase and HiveQL for the OnlineRetail dataset with the specified columns:
+
+i. Create and load table with Online Retail data in Hive:
 
 ```sql
-CREATE TABLE invoices (
+-- Create Online Retail table in Hive
+CREATE TABLE online_retail (
   InvoiceNo STRING,
   StockCode STRING,
   Quantity INT,
@@ -13,46 +16,68 @@ CREATE TABLE invoices (
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
+
+-- Load data into Online Retail table
+LOAD DATA INPATH '/path/to/online_retail_data.csv' INTO TABLE online_retail;
 ```
 
-This creates a Hive table named "invoices" with the specified columns. The table is defined with a row format delimited by a comma (',') and stored as a text file.
+Replace '/path/to/online_retail_data.csv' with the actual path to your Online Retail data file.
 
-You can then load data into this table using the `LOAD DATA` statement:
-
+j. Create index on Online Retail table in Hive:
 ```sql
-LOAD DATA INPATH '/path/to/invoices_data.csv' INTO TABLE invoices;
+CREATE INDEX idx_unit_price ON TABLE online_retail (UnitPrice) AS 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler' WITH DEFERRED REBUILD;
 ```
 
-Replace '/path/to/invoices_data.csv' with the actual path to your data file. This statement will load the data from the CSV file into the "invoices" table.
-
-Now, you can perform various operations on the "invoices" table in Hive using SQL queries.
-
-Certainly! Here are the operations you requested, performed on the "invoices" table:
-
-a. Find the total and average sales in Hive:
+k. Find the total and average sales in Hive:
 ```sql
 -- Total sales
 SELECT SUM(Quantity * UnitPrice) AS total_sales
-FROM invoices;
+FROM online_retail;
 
 -- Average sales
 SELECT AVG(Quantity * UnitPrice) AS average_sales
-FROM invoices;
+FROM online_retail;
 ```
 
-b. Find order details with the maximum cost:
+l. Find order details with maximum cost:
 ```sql
 SELECT InvoiceNo, StockCode, Quantity, InvoiceDate, UnitPrice, CustomerID, Country
-FROM invoices
+FROM online_retail
 WHERE (Quantity * UnitPrice) = (
   SELECT MAX(Quantity * UnitPrice)
-  FROM invoices
+  FROM online_retail
 );
 ```
 
-c. Creating an external Hive table to connect to HBase for Customer Information System:
+m. Find customer details with maximum order total:
 ```sql
-CREATE EXTERNAL TABLE customer_info_hbase (
+SELECT CustomerID, SUM(Quantity * UnitPrice) AS order_total
+FROM online_retail
+GROUP BY CustomerID
+ORDER BY order_total DESC
+LIMIT 1;
+```
+
+n. Find the country with maximum and minimum sale:
+```sql
+-- Country with maximum sale
+SELECT Country, SUM(Quantity * UnitPrice) AS total_sales
+FROM online_retail
+GROUP BY Country
+ORDER BY total_sales DESC
+LIMIT 1;
+
+-- Country with minimum sale
+SELECT Country, SUM(Quantity * UnitPrice) AS total_sales
+FROM online_retail
+GROUP BY Country
+ORDER BY total_sales ASC
+LIMIT 1;
+```
+
+o. Creating an external Hive table to connect to HBase for OnlineRetail:
+```sql
+CREATE EXTERNAL TABLE online_retail_hbase (
   InvoiceNo STRING,
   StockCode STRING,
   Quantity INT,
@@ -65,12 +90,12 @@ STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
 WITH SERDEPROPERTIES (
   "hbase.columns.mapping" = ":key,info:StockCode,info:Quantity,info:InvoiceDate,info:UnitPrice,info:CustomerID,info:Country"
 )
-TBLPROPERTIES ("hbase.table.name" = "invoices");
+TBLPROPERTIES ("hbase.table.name" = "online_retail");
 ```
 
-d. Display records of Customer Information Table in HBase:
+p. Display records of OnlineRetail table in HBase:
 ```sql
-SELECT * FROM customer_info_hbase;
+SELECT * FROM online_retail_hbase;
 ```
 
-Make sure to execute these commands in the Hive shell to perform the respective operations on the "invoices" table.
+Make sure to execute these commands in the Hive shell to perform the respective operations on the OnlineRetail dataset.
