@@ -12,7 +12,9 @@ CREATE TABLE online_retail (
   UnitPrice DOUBLE,
   CustomerID STRING,
   Country STRING
-)
+) ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
 
 
 -- Load data into Online Retail table
