@@ -41,18 +41,19 @@ FROM online_retail;
 
 l. Find order details with maximum cost:
 ```sql
-SELECT InvoiceNo, StockCode, Quantity, InvoiceDate, UnitPrice, CustomerID, Country
+SELECT CustomerID, SUM(Quantity * UnitPrice) AS order_total
 FROM online_retail
-WHERE (Quantity * UnitPrice) = (
-  SELECT MAX(Quantity * UnitPrice)
-  FROM online_retail
+GROUP BY CustomerID
+ORDER BY order_total DESC
+LIMIT 1;
 );
 ```
 
 m. Find customer details with maximum order total:
 ```sql
 SELECT CustomerID, SUM(Quantity * UnitPrice) AS order_total
-FROM online_retail
+FROM OnlineRetail
+WHERE CustomerID IS NOT NULL
 GROUP BY CustomerID
 ORDER BY order_total DESC
 LIMIT 1;
