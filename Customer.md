@@ -7,21 +7,27 @@ CREATE TABLE Customer_info (
   Cust_ID INT,
   Cust_Name STRING,
   Order_ID INT
-) STORED AS ORC;
+) ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
 
 -- order_info table
 CREATE TABLE order_info (
   Order_ID INT,
   Item_ID INT,
   Quantity INT
-) STORED AS ORC;
+) ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
 
 -- item_info table
 CREATE TABLE item_info (
   Item_ID INT,
   Item_Name STRING,
   Item_Price DOUBLE
-) STORED AS ORC;
+) ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
 ```
 
 b. Load table with data from local storage in Hive:
